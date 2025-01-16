@@ -1,93 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Player</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-        .audio-container {
-            margin: 20px 0;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            display: inline-block;
-        }
-        .audio-container input[type="file"] {
-            display: none;
-        }
-        .volume-slider {
-            width: 150px;
-            margin: 10px;
-        }
-        button {
-            cursor: pointer;
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+<title>Multi-Audio Player</title>
+<style>
+body {
+    font-family: sans-serif;
+}
+.audio-container {
+    margin-bottom: 20px;
+}
+.audio-controls {
+    display: flex;
+    align-items: center;
+}
+.audio-name {
+    margin-right: 10px;
+}
+.volume-slider {
+    width: 100px;
+}
+</style>
 </head>
 <body>
-    <h1>Multi-Audio Player</h1>
-    <div id="audio-players"></div>
-    <button id="add-audio">Add Audio</button>
+<h1>Multi-Audio Player</h1>
 
-    <script>
-        const audioPlayersContainer = document.getElementById('audio-players');
-        const addAudioButton = document.getElementById('add-audio');
+<div class="audio-container">
+    <span class="audio-name">Audio 1:</span>
+    <input type="file" id="audio1" accept="audio/*">
+    <button id="play1">Play</button>
+    <button id="pause1">Pause</button>
+    <input type="range" min="0" max="1" step="0.01" class="volume-slider" id="volume1">
+</div>
 
-        addAudioButton.addEventListener('click', () => {
-            const audioContainer = document.createElement('div');
-            audioContainer.classList.add('audio-container');
+<div class="audio-container">
+    <span class="audio-name">Audio 2:</span>
+    <input type="file" id="audio2" accept="audio/*">
+    <button id="play2">Play</button>
+    <button id="pause2">Pause</button>
+    <input type="range" min="0" max="1" step="0.01" class="volume-slider" id="volume2">
+</div>
 
-            const fileInput = document.createElement('input');
-            fileInput.type = 'file';
-            fileInput.accept = 'audio/*';
-            
-            const audio = document.createElement('audio');
-            audio.controls = true;
+<script>
+const audio1 = new Audio();
+const audio2 = new Audio();
 
-            fileInput.addEventListener('change', (event) => {
-                const file = event.target.files[0];
-                if (file) {
-                    const objectUrl = URL.createObjectURL(file);
-                    audio.src = objectUrl;
-                }
-            });
+document.getElementById('play1').addEventListener('click', () => {
+    audio1.play();
+});
 
-            const selectAudioButton = document.createElement('button');
-            selectAudioButton.textContent = 'Select Audio';
-            selectAudioButton.addEventListener('click', () => fileInput.click());
+document.getElementById('pause1').addEventListener('click', () => {
+    audio1.pause();
+});
 
-            const volumeSlider = document.createElement('input');
-            volumeSlider.type = 'range';
-            volumeSlider.min = 0;
-            volumeSlider.max = 1;
-            volumeSlider.step = 0.01;
-            volumeSlider.value = 1;
-            volumeSlider.classList.add('volume-slider');
-            volumeSlider.addEventListener('input', () => {
-                audio.volume = volumeSlider.value;
-            });
+document.getElementById('play2').addEventListener('click', () => {
+    audio2.play();
+});
 
-            audioContainer.appendChild(selectAudioButton);
-            audioContainer.appendChild(audio);
-            audioContainer.appendChild(volumeSlider);
-            audioContainer.appendChild(fileInput);
+document.getElementById('pause2').addEventListener('click', () => {
+    audio2.pause();
+});
 
-            audioPlayersContainer.appendChild(audioContainer);
-        });
-    </script>
+document.getElementById('audio1').addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+        audio1.src = e.target.result;
+    };
+
+    reader.readAsDataURL(file);
+});
+
+document.getElementById('audio2').addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+        audio2.src = e.target.result;
+    };
+
+    reader.readAsDataURL(file);
+});
+
+document.getElementById('volume1').addEventListener('input', () => {
+    audio1.volume = document.getElementById('volume1').value;
+});
+
+document.getElementById('volume2').addEventListener('input', () => {
+    audio2.volume = document.getElementById('volume2').value;
+});
+</script>
 </body>
 </html>
