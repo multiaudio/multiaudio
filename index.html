@@ -17,6 +17,9 @@
             border-radius: 8px;
             display: inline-block;
         }
+        .audio-container input[type="file"] {
+            display: none;
+        }
         .volume-slider {
             width: 150px;
             margin: 10px;
@@ -41,7 +44,7 @@
             const fileInput = document.createElement('input');
             fileInput.type = 'file';
             fileInput.accept = 'audio/*';
-            fileInput.style.display = 'block'; // Make it visible for Safari compatibility
+
             fileInput.addEventListener('change', (event) => {
                 const file = event.target.files[0];
                 if (file) {
@@ -64,7 +67,25 @@
                 }
             });
 
+            // Create a label for the file input
+            const selectAudioLabel = document.createElement('label');
+            selectAudioLabel.textContent = 'Select Audio';
+            selectAudioLabel.style.cursor = 'pointer';
+            selectAudioLabel.style.display = 'inline-block';
+            selectAudioLabel.style.padding = '8px 15px';
+            selectAudioLabel.style.backgroundColor = '#007BFF';
+            selectAudioLabel.style.color = '#fff';
+            selectAudioLabel.style.borderRadius = '5px';
+            selectAudioLabel.style.marginTop = '10px';
+            selectAudioLabel.style.userSelect = 'none';
+
+            // Associate the label with the file input
+            selectAudioLabel.htmlFor = `file-${Math.random().toString(36).substr(2, 9)}`;
+            fileInput.id = selectAudioLabel.htmlFor;
+
+            // Append elements to the container
             audioContainer.appendChild(fileInput);
+            audioContainer.appendChild(selectAudioLabel);
             audioPlayersContainer.appendChild(audioContainer);
         });
     </script>
