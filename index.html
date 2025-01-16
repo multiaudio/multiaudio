@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .audio-container {
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        .audio-container input[type="file"] {
+            display: none;
+        }
+        .volume-slider {
+            width: 150px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Multi-Audio Player</h1>
+    <div id="audio-players"></div>
+    <button id="add-audio">Add Audio</button>
+
+    <script>
+        const audioPlayersContainer = document.getElementById('audio-players');
+        const addAudioButton = document.getElementById('add-audio');
+
+        addAudioButton.addEventListener('click', () => {
+            // Create an audio player container
+            const audioContainer = document.createElement('div');
+            audioContainer.classList.add('audio-container');
+
+            // Create a file input
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'audio/*';
+            fileInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const audio = new Audio(URL.createObjectURL(file));
+                    audio.controls = true;
+                    audioContainer.appendChild(audio);
+
+                    // Add volume slider
+                    const volumeSlider = document.createElement('input');
+                    volumeSlider.type = 'range';
+                    volumeSlider.min = 0;
+                    volumeSlider.max = 1;
+                    volumeSlider.step = 0.01;
+                    volumeSlider.value = 1;
+                    volumeSlider.classList.add('volume-slider');
+                    volumeSlider.addEventListener('input', () => {
+                        audio.volume = volumeSlider.value;
+                    });
+                    audioContainer.appendChild(volumeSlider);
+                }
+            });
+
+            // Create and attach a button to open the file picker
+            const selectAudioButton = document.createElement('button');
+            selectAudioButton.textContent = 'Select Audio';
+            selectAudioButton.addEventListener('click', () => {
+                fileInput.click();
+            });
+            audioContainer.appendChild(selectAudioButton);
+
+            // Append the container to the main container
+            audioPlayersContainer.appendChild(audioContainer);
+        });
+    </script>
+</body>
+</html>
