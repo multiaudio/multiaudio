@@ -24,6 +24,18 @@
             width: 150px;
             margin: 10px;
         }
+        button {
+            cursor: pointer;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -36,56 +48,44 @@
         const addAudioButton = document.getElementById('add-audio');
 
         addAudioButton.addEventListener('click', () => {
-            // Create an audio player container
             const audioContainer = document.createElement('div');
             audioContainer.classList.add('audio-container');
 
-            // Create a file input
             const fileInput = document.createElement('input');
             fileInput.type = 'file';
             fileInput.accept = 'audio/*';
+            
+            const audio = document.createElement('audio');
+            audio.controls = true;
 
             fileInput.addEventListener('change', (event) => {
                 const file = event.target.files[0];
                 if (file) {
-                    const audio = new Audio(URL.createObjectURL(file));
-                    audio.controls = true;
-                    audioContainer.appendChild(audio);
-
-                    // Add volume slider
-                    const volumeSlider = document.createElement('input');
-                    volumeSlider.type = 'range';
-                    volumeSlider.min = 0;
-                    volumeSlider.max = 1;
-                    volumeSlider.step = 0.01;
-                    volumeSlider.value = 1;
-                    volumeSlider.classList.add('volume-slider');
-                    volumeSlider.addEventListener('input', () => {
-                        audio.volume = volumeSlider.value;
-                    });
-                    audioContainer.appendChild(volumeSlider);
+                    const objectUrl = URL.createObjectURL(file);
+                    audio.src = objectUrl;
                 }
             });
 
-            // Create a label for the file input
-            const selectAudioLabel = document.createElement('label');
-            selectAudioLabel.textContent = 'Select Audio';
-            selectAudioLabel.style.cursor = 'pointer';
-            selectAudioLabel.style.display = 'inline-block';
-            selectAudioLabel.style.padding = '8px 15px';
-            selectAudioLabel.style.backgroundColor = '#007BFF';
-            selectAudioLabel.style.color = '#fff';
-            selectAudioLabel.style.borderRadius = '5px';
-            selectAudioLabel.style.marginTop = '10px';
-            selectAudioLabel.style.userSelect = 'none';
+            const selectAudioButton = document.createElement('button');
+            selectAudioButton.textContent = 'Select Audio';
+            selectAudioButton.addEventListener('click', () => fileInput.click());
 
-            // Associate the label with the file input
-            selectAudioLabel.htmlFor = `file-${Math.random().toString(36).substr(2, 9)}`;
-            fileInput.id = selectAudioLabel.htmlFor;
+            const volumeSlider = document.createElement('input');
+            volumeSlider.type = 'range';
+            volumeSlider.min = 0;
+            volumeSlider.max = 1;
+            volumeSlider.step = 0.01;
+            volumeSlider.value = 1;
+            volumeSlider.classList.add('volume-slider');
+            volumeSlider.addEventListener('input', () => {
+                audio.volume = volumeSlider.value;
+            });
 
-            // Append elements to the container
+            audioContainer.appendChild(selectAudioButton);
+            audioContainer.appendChild(audio);
+            audioContainer.appendChild(volumeSlider);
             audioContainer.appendChild(fileInput);
-            audioContainer.appendChild(selectAudioLabel);
+
             audioPlayersContainer.appendChild(audioContainer);
         });
     </script>
