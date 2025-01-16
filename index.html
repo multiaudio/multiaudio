@@ -17,9 +17,6 @@
             border-radius: 8px;
             display: inline-block;
         }
-        .audio-container input[type="file"] {
-            display: none;
-        }
         .volume-slider {
             width: 150px;
             margin: 10px;
@@ -44,6 +41,7 @@
             const fileInput = document.createElement('input');
             fileInput.type = 'file';
             fileInput.accept = 'audio/*';
+            fileInput.style.display = 'block'; // Make it visible for Safari compatibility
             fileInput.addEventListener('change', (event) => {
                 const file = event.target.files[0];
                 if (file) {
@@ -66,15 +64,7 @@
                 }
             });
 
-            // Create and attach a button to open the file picker
-            const selectAudioButton = document.createElement('button');
-            selectAudioButton.textContent = 'Select Audio';
-            selectAudioButton.addEventListener('click', () => {
-                fileInput.click();
-            });
-            audioContainer.appendChild(selectAudioButton);
-
-            // Append the container to the main container
+            audioContainer.appendChild(fileInput);
             audioPlayersContainer.appendChild(audioContainer);
         });
     </script>
