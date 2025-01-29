@@ -22,24 +22,38 @@
     }
     audio {
       margin-top: 20px;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
 
-  <h1>Upload and Play Your Audio</h1>
+  <h1>Upload and Play Two Audios Simultaneously</h1>
 
-  <!-- File input to select audio -->
-  <input type="file" id="audioFile" accept="audio/*">
+  <!-- File input for the first audio -->
+  <input type="file" id="audioFile1" accept="audio/*">
+  <audio id="audioPlayer1" controls></audio>
   
-  <!-- Audio player -->
-  <audio id="audioPlayer" controls></audio>
+  <!-- File input for the second audio -->
+  <input type="file" id="audioFile2" accept="audio/*">
+  <audio id="audioPlayer2" controls></audio>
 
   <script>
-    // JavaScript to handle file selection and audio playback
-    document.getElementById('audioFile').addEventListener('change', function(event) {
+    // JavaScript to handle file selection and audio playback for both players
+    document.getElementById('audioFile1').addEventListener('change', function(event) {
       var file = event.target.files[0];
-      var audioPlayer = document.getElementById('audioPlayer');
+      var audioPlayer = document.getElementById('audioPlayer1');
+      
+      if (file) {
+        var objectURL = URL.createObjectURL(file);
+        audioPlayer.src = objectURL;
+        audioPlayer.play();
+      }
+    });
+
+    document.getElementById('audioFile2').addEventListener('change', function(event) {
+      var file = event.target.files[0];
+      var audioPlayer = document.getElementById('audioPlayer2');
       
       if (file) {
         var objectURL = URL.createObjectURL(file);
