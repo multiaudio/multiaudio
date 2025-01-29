@@ -163,8 +163,6 @@
         document.getElementById("playPauseBtn1").textContent = "Play";
       } else {
         player1.play();
-        // Resume audio context to enable background playback
-        audioContext1.resume();
         document.getElementById("playPauseBtn1").textContent = "Pause";
       }
       isPlaying1 = !isPlaying1;
@@ -174,8 +172,6 @@
         document.getElementById("playPauseBtn2").textContent = "Play";
       } else {
         player2.play();
-        // Resume audio context to enable background playback
-        audioContext2.resume();
         document.getElementById("playPauseBtn2").textContent = "Pause";
       }
       isPlaying2 = !isPlaying2;
