@@ -1,91 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Player</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-        .audio-container {
-            margin: 20px 0;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            display: inline-block;
-        }
-        .volume-slider {
-            width: 150px;
-            margin: 10px;
-        }
-        input[type="text"] {
-            width: 80%;
-            padding: 10px;
-            margin: 10px 0;
-            font-size: 16px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Audio Website</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    input[type="file"] {
+      margin-bottom: 10px;
+    }
+    audio {
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Multi-Audio Player</h1>
-    <div id="audio-players"></div>
-    <button id="add-audio">Add Audio</button>
 
-    <script>
-        const audioPlayersContainer = document.getElementById('audio-players');
-        const addAudioButton = document.getElementById('add-audio');
+  <h1>Upload and Play Your Audio</h1>
 
-        addAudioButton.addEventListener('click', () => {
-            // Create an audio player container
-            const audioContainer = document.createElement('div');
-            audioContainer.classList.add('audio-container');
+  <!-- File input to select audio -->
+  <input type="file" id="audioFile" accept="audio/*">
+  
+  <!-- Audio player -->
+  <audio id="audioPlayer" controls></audio>
 
-            // Create an input field for the audio link
-            const audioInput = document.createElement('input');
-            audioInput.type = 'text';
-            audioInput.placeholder = 'Paste public audio link here';
+  <script>
+    // JavaScript to handle file selection and audio playback
+    document.getElementById('audioFile').addEventListener('change', function(event) {
+      var file = event.target.files[0];
+      var audioPlayer = document.getElementById('audioPlayer');
+      
+      if (file) {
+        var objectURL = URL.createObjectURL(file);
+        audioPlayer.src = objectURL;
+        audioPlayer.play();
+      }
+    });
+  </script>
 
-            // Create an audio element
-            const audio = document.createElement('audio');
-            audio.controls = true;
-
-            // Button to load the audio
-            const loadAudioButton = document.createElement('button');
-            loadAudioButton.textContent = 'Load Audio';
-            loadAudioButton.addEventListener('click', () => {
-                const audioUrl = audioInput.value.trim();
-                if (audioUrl) {
-                    audio.src = audioUrl;
-                    audio.play();
-                } else {
-                    alert('Please enter a valid audio URL');
-                }
-            });
-
-            // Add volume slider
-            const volumeSlider = document.createElement('input');
-            volumeSlider.type = 'range';
-            volumeSlider.min = 0;
-            volumeSlider.max = 1;
-            volumeSlider.step = 0.01;
-            volumeSlider.value = 1;
-            volumeSlider.classList.add('volume-slider');
-            volumeSlider.addEventListener('input', () => {
-                audio.volume = volumeSlider.value;
-            });
-
-            // Append all elements to the audio container
-            audioContainer.appendChild(audioInput);
-            audioContainer.appendChild(loadAudioButton);
-            audioContainer.appendChild(audio);
-            audioContainer.appendChild(volumeSlider);
-
-            // Append the container to the main container
-            audioPlayersContainer.appendChild(audioContainer);
-        });
-    </script>
 </body>
 </html>
