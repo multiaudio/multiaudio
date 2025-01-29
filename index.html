@@ -17,12 +17,15 @@
     h1 {
       margin-bottom: 20px;
     }
-    input[type="file"] {
+    input[type="file"], input[type="range"] {
       margin-bottom: 10px;
     }
     audio {
       margin-top: 20px;
       margin-bottom: 10px;
+    }
+    .player-container {
+      margin-bottom: 20px;
     }
   </style>
 </head>
@@ -30,16 +33,24 @@
 
   <h1>Upload and Play Two Audios Simultaneously</h1>
 
-  <!-- File input for the first audio -->
-  <input type="file" id="audioFile1" accept="audio/*">
-  <audio id="audioPlayer1" controls></audio>
-  
-  <!-- File input for the second audio -->
-  <input type="file" id="audioFile2" accept="audio/*">
-  <audio id="audioPlayer2" controls></audio>
+  <!-- First Audio Player -->
+  <div class="player-container">
+    <input type="file" id="audioFile1" accept="audio/*">
+    <audio id="audioPlayer1" controls></audio>
+    <label for="volume1">Volume:</label>
+    <input type="range" id="volume1" min="0" max="1" step="0.01" value="1">
+  </div>
+
+  <!-- Second Audio Player -->
+  <div class="player-container">
+    <input type="file" id="audioFile2" accept="audio/*">
+    <audio id="audioPlayer2" controls></audio>
+    <label for="volume2">Volume:</label>
+    <input type="range" id="volume2" min="0" max="1" step="0.01" value="1">
+  </div>
 
   <script>
-    // JavaScript to handle file selection and audio playback for both players
+    // Handle first audio file selection and playback
     document.getElementById('audioFile1').addEventListener('change', function(event) {
       var file = event.target.files[0];
       var audioPlayer = document.getElementById('audioPlayer1');
@@ -51,6 +62,7 @@
       }
     });
 
+    // Handle second audio file selection and playback
     document.getElementById('audioFile2').addEventListener('change', function(event) {
       var file = event.target.files[0];
       var audioPlayer = document.getElementById('audioPlayer2');
@@ -60,6 +72,18 @@
         audioPlayer.src = objectURL;
         audioPlayer.play();
       }
+    });
+
+    // Adjust volume for the first player
+    document.getElementById('volume1').addEventListener('input', function(event) {
+      var audioPlayer = document.getElementById('audioPlayer1');
+      audioPlayer.volume = event.target.value;
+    });
+
+    // Adjust volume for the second player
+    document.getElementById('volume2').addEventListener('input', function(event) {
+      var audioPlayer = document.getElementById('audioPlayer2');
+      audioPlayer.volume = event.target.value;
     });
   </script>
 
